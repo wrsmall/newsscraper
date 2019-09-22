@@ -1,0 +1,13 @@
+<p class="h2 mt-2 text-dark text-center">Current Articles</p>
+
+<div class="container text-center">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 text-center">
+            {{#each data}}
+            <p class="h3 text-center">{{headline}}</p>
+                {{summary}}<br><a href="{{link}}">Go to article</a></p>
+
+            {{/each}}
+        </div>
+    </div>
+</div>
