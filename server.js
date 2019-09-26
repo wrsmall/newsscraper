@@ -2,9 +2,9 @@ var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 
-
 var axios = require("axios");
 var cheerio = require("cheerio");
+
 
 
 var PORT =  process.env.PORT|| 3000;
@@ -30,17 +30,16 @@ app.use(express.static("public"));
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
-// Routes
+
 var results = [];
 
 
 app.get("/", function (req, res) {
-    
     axios.get("https://www.wsj.com/").then(function (response) {
         
         var $ = cheerio.load(response.data);
 
-        
+ 
         $("article").each(function (i, element) {
             console.log(results.length);
             if (results.length > 10) {
@@ -70,18 +69,18 @@ app.get("/", function (req, res) {
                 .text()
             }, result, { upsert: true })
                 .then(function (dbHeadline) {
-    
                     console.log(dbHeadline);
 
 
                 })
-                .catch(function (err) {=
+                .catch(function (err) {
+                    
                     console.log(err);
                 })
             
         });
 
-    ]
+        
 
     });
     db.Headline.find({}).populate("comment")
@@ -90,9 +89,7 @@ app.get("/", function (req, res) {
             console.log(dbHeadlines);
             res.render("index", { allData: dbHeadlines });
         })
-     .catch(function (err) {
-         res.json(err);
-     })
+   
 });
 app.get("/article", function (req, res) {
     db.Headline.find({})
