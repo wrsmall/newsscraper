@@ -3,10 +3,44 @@
 <div class="container text-center">
     <div class="row justify-content-center">
         <div class="col-lg-6 text-center">
-            {{#each data}}
+            {{#each allData}}
             <p class="h3 text-center">{{headline}}</p>
-                {{summary}}<br><a href="{{link}}">Go to article</a></p>
+            {{summary}}<br><a href="{{link}}">Go to article</a></p>
 
+           {{#each this.comment}}
+            <p>{{this.username}}:{{this.usercomment}}</p>
+            {{/each}} 
+        
+            <!-- Button trigger modal -->
+            <button type="button" class="rounded " data-toggle="modal" data-target="#commentModal-{{id}}">
+                Add Comment
+            </button>
+            <div class="modal fade" id="commentModal-{{id}}" tabindex="-1" role="dialog" data-value="{{id}}"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-2"></div>
+                            <div class="modal-title col-lg-8 " id="userName">
+                                <input type="text" class="form-control text-center userName-{{id}}" placeholder="Enter Your Name Here">
+                                </div>
+                            <div class="col-lg-2"></div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <label for="comment">Comment:</label>
+                            <textarea class="form-control userInput-{{id}}" rows="5" id="userComment"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary save" data-id="{{_id}}">Save Comment</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {{/each}}
         </div>
     </div>

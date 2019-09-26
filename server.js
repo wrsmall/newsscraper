@@ -64,6 +64,7 @@ app.get("/", function (req, res) {
                 .find("h3")
                 .children("h3 a")
                 .attr("href");
+                result.comment = [];
             results.push(result);
             db.Headline.updateOne({
                 headline: $(element)
@@ -87,11 +88,11 @@ app.get("/", function (req, res) {
         // Send a message to the client
 
     });
-    db.Headline.find({})
+    db.Headline.find({}).populate("comment")
         .then(function (dbHeadlines) {
             console.log("helloooooo");
             console.log(dbHeadlines);
-            res.render("index", { data: dbHeadlines });
+            res.render("index", { allData: dbHeadlines });
         })
     // .catch(function (err) {
     //     res.json(err);
@@ -100,14 +101,38 @@ app.get("/", function (req, res) {
 app.get("/article", function (req, res) {
     db.Headline.find({})
         .then(function (dbHeadline) {
-            res.render("index", { data: dbHeadline });
+            res.render("index", { allData: dbHeadline });
         })
         .catch(function (err) {
             res.json(err);
         })
 
 });
-
+app.post("/comments/:id", function(req, res) {
+    // Create a new note and pass the req.body to the entry
+    console.log(req.body)
+    db.Comment.create(req.body)
+      .then(function(dbComment) {
+          console.log(dbComment);
+        // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
+        // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
+        // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
+        return db.Headline.findOneAndUpdate({ _id: req.params.id }, {$push:{ comment: dbComment._id}}, { new: true });
+      })
+      .then(function(data) {
+        // If we were able to successfully update an Article, send it back to the client
+        console.log(data);
+        db.Article.find({}).populate("comment").then(allData => {
+            res.render( "index", {allData: allData} );;
+            console.log(allData);
+        })
+        
+      })
+      .catch(function(err) {
+        // If an error occurred, send it to the client
+        res.json(err);
+      });
+  });
 
 
 
