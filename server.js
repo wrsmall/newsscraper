@@ -126,11 +126,13 @@ app.post("/comments/:id", function(req, res) {
             res.render( "index", {allData: allData} );;
             console.log(allData);
         })
+        location.reload();
         
       })
       .catch(function(err) {
         // If an error occurred, send it to the client
         res.json(err);
+        
       });
   });
 

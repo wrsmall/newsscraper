@@ -15,7 +15,7 @@ $(".save").on("click", function() {
   })
     // With that done
     .then(function(comment) {
-      // Log the response
+      location.reload();
       
       // Empty the notes section
       $("#notes").empty();
