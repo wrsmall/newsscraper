@@ -16,7 +16,7 @@ var PORT = 3000;
 var app = express();
 
 // Configure middleware
-
+var MONGODB_URI=process.env.MONGODB_URI||"mongodb://localhost/Headline";
 var db = require("./models");
 var exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
@@ -31,7 +31,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/Headline", { useNewUrlParser: true });
+mongoose.connect(MONGODB_URI), { useNewUrlParser: true });
 
 // Routes
 var results = [];
